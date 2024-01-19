@@ -1,0 +1,11 @@
+node_modules
+
+# Node.js
+node_modules/
+
+# Prisma
+/prisma/client
+/prisma/migrations/
+
+# Otros
+.env
