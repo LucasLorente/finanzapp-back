@@ -12,5 +12,6 @@ model expenses {
   description String?  @db.VarChar(80)
   amount      Int
   date        DateTime @db.Date
-  created_at  DateTime @db.Timestamp(6)
+  created_at  DateTime @db.Timestamp(6) @default(now())
+  updated_at  DateTime @db.Timestamp(6) @updatedAt
 }

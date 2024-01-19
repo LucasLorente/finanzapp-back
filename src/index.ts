@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import cors from 'cors'
 import dotenv from 'dotenv';
 import Routes from './routes';
 
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 8000;
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+//CORS
+app.use(cors())
 
 // Routes
 app.use('/', Routes);

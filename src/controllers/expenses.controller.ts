@@ -11,6 +11,17 @@ class ExpensesController {
             res.status(500).json({ error: 'Error al obtener Gastos' });
           }
     };
+
+    create = async (req: Request, res: Response) => {
+      const { description, amount } = req.body
+      await prisma.expenses.create({
+        data:{
+          description,
+          amount,
+          date: new Date()
+        }
+      })
+    };
 }
 
 export default new ExpensesController();
