@@ -1,23 +1,8 @@
-import express from "express";
-import prisma from "../prisma";
+import express from 'express';
+import expensesRoutes from './expenses.routes';
 
 const router = express.Router();
 
-router.get('/expenses', async (req, res) => {
-  try {
-    await prisma.expenses.create({
-      data: { 
-        amount: 500,
-        date: new Date(),
-        created_at: new Date(),
-      },
-    })
-    const expenses = await prisma.expenses.findMany();
-    res.json(expenses);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al obtener usuarios' });
-  }
-});
+router.use('/expenses', expensesRoutes);
 
 export default router;
