@@ -29,6 +29,19 @@ async function main() {
       },
     ],
   });
+  await prisma.expensesType.createMany({
+    data: [
+      {
+        name: "Fijos",
+      },
+      {
+        name: "Variables Necesarios",
+      },
+      {
+        name: "Superfluos",
+      },
+    ],
+  });
 }
 main()
   .then(async () => {
