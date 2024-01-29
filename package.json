@@ -9,6 +9,9 @@
     "build": "tsc",
     "serve": "node dist/index.js"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^5.8.1",
     "cors": "^2.8.5",
