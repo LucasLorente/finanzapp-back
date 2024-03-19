@@ -63,6 +63,30 @@ class ExpensesController {
       res.status(500).json({ error: "Error al obtener Gastos" });
     }
   };
+
+  getMonthlyExpenses = async (_req: Request, res: Response) => {
+    try {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1; // Los meses en JavaScript van de 0 a 11, por lo que se suma 1
+
+      const monthlyExpenses = await prisma.expenses.aggregate({
+        _sum: {
+          amount: true,
+        },
+        where: {
+          date: {
+            gte: new Date(currentYear, currentMonth - 1, 1), // Primer día del mes actual
+            lt: new Date(currentYear, currentMonth, 1), // Primer día del siguiente mes
+          },
+        },
+      });
+
+      res.json(monthlyExpenses);
+    } catch (error) {
+      res.status(500).json({ error: "Error al obtener Gastos" });
+    }
+  };
 }
 
 export default new ExpensesController();
