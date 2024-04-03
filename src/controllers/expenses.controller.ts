@@ -4,7 +4,11 @@ import prisma from "../prisma";
 class ExpensesController {
   getAll = async (_req: Request, res: Response) => {
     try {
-      const expenses = await prisma.expenses.findMany();
+      const expenses = await prisma.expenses.findMany({
+        orderBy: {
+          date: "desc",
+        },
+      });
       res.json(expenses);
     } catch (error) {
       res.status(500).json({ error: "Error al obtener Gastos" });
