@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
+import ExpensesService from "../services/expenses.services";
 
 class ExpensesController {
+  private expensesService: ExpensesService;
+
+  constructor() {
+    this.expensesService = new ExpensesService();
+  }
+
   getAll = async (_req: Request, res: Response) => {
     try {
       const expenses = await prisma.expenses.findMany({
@@ -31,11 +38,7 @@ class ExpensesController {
 
   getTotal = async (_req: Request, res: Response) => {
     try {
-      const total = await prisma.expenses.aggregate({
-        _sum: {
-          amount: true,
-        },
-      });
+      const total = await this.expensesService.getExpensesTotal();
       res.json(total);
     } catch (error) {
       res.status(500).json({ error: "Error al obtener Gastos" });
