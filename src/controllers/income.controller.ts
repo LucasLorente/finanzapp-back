@@ -16,14 +16,12 @@ class IncomeController {
   };
 
   create = async (req: Request, res: Response) => {
-    const { description, amount, date, categoryId: category_id } = req.body;
+    const { description, amount, date } = req.body;
     const expense = await prisma.income.create({
       data: {
         description,
         amount,
         date,
-        type_id: 1,
-        category_id,
       },
     });
     res.json(expense);
