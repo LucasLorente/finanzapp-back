@@ -23,13 +23,13 @@ class ExpensesController {
   };
 
   create = async (req: Request, res: Response) => {
-    const { description, amount, date, categoryId: category_id } = req.body;
+    const { description, amount, date, categoryId: category_id, typeId: type_id } = req.body;
     const expense = await prisma.expenses.create({
       data: {
         description,
         amount,
         date,
-        type_id: 1,
+        type_id,
         category_id,
       },
     });
@@ -92,6 +92,52 @@ class ExpensesController {
       res.json(monthlyExpenses);
     } catch (error) {
       res.status(500).json({ error: "Error al obtener Gastos" });
+    }
+  };
+
+  getByCategory = async (_req: Request, res: Response) => {
+    try {
+      const expensesByCategory = await prisma.expensesCategory.findMany({
+        include: {
+          expenses: {
+            select: {
+              amount: true,
+            },
+          },
+        },
+      });
+
+      const result = expensesByCategory.map((category) => ({
+        name: category.name,
+        total: category.expenses.reduce((sum, exp) => sum + exp.amount, 0),
+      }));
+
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Error al obtener gastos por categoría" });
+    }
+  };
+
+  getByType = async (_req: Request, res: Response) => {
+    try {
+      const expensesByType = await prisma.expensesType.findMany({
+        include: {
+          expenses: {
+            select: {
+              amount: true,
+            },
+          },
+        },
+      });
+
+      const result = expensesByType.map((type) => ({
+        name: type.name,
+        total: type.expenses.reduce((sum, exp) => sum + exp.amount, 0),
+      }));
+
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Error al obtener gastos por tipo" });
     }
   };
 }
